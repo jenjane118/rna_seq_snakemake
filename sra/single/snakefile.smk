@@ -12,7 +12,7 @@ configfile: "config.yaml"
 rule all:
     input:
         expand("files/{accession}.fastq.gz", accession=config["accession"]),
-        "data/sc.txt"
+        expand(["files/{accession}_sc.txt"], accession=config["accession"])
 
 rule fasterq_single:
     output:
@@ -33,9 +33,10 @@ rule compress_files:
         "gzip {input}"
 
 rule sanity_check:
+    input:
+        "files/{accession}_1.fastq.gz",
+        "files/{accession}_2.fastq.gz"
     output:
-        "data/sc.txt"
+        "files/{accession}_sc.txt"
     shell:
-        "for file in `ls files/*.fastq.gz`; do wc -l $file; done > {output}"
-
-    
+         "for file in {input}; do zcat $file | wc -l; done >> {output}"
