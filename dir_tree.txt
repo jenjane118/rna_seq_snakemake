@@ -2,6 +2,8 @@
 ├── README.md
 ├── bam_coverage
 │   └── snakefile.smk
+├── bowtie2
+│   └── snakefile.smk
 ├── dir_tree.txt
 ├── fastp
 │   ├── pe
@@ -18,10 +20,11 @@
 │       └── snakefile.smk
 ├── mbovis_wgs.ipynb
 ├── rna_seq_nb.ipynb
-└── sra
-    ├── pe
-    │   └── snakefile.smk
-    └── single
-        └── snakefile.smk
+├── sra
+│   ├── pe
+│   │   └── snakefile.smk
+│   └── single
+│       └── snakefile.smk
+└── tree_out.txt
 
-12 directories, 12 files
+14 directories, 14 files
