@@ -23,7 +23,9 @@ rule fastp_pe:
         json="trimmed/{sample}_fastp.json"
     log:
         "logs/fastp_trim/{sample}.log"
+    params:
+        extra="-q 30" #quality score cutoff of phred>30
     threads: 2
     wrapper:
-        "v1.14.1/bio/fastp"
+        "v3.4.1/bio/fastp"
 
