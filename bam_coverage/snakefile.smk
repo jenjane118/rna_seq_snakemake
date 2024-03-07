@@ -14,7 +14,9 @@ rule bam_coverage:
     output:
         fwfile="covg_bigwigs/{sample}_fwd.bw",
         rvfile="covg_bigwigs/{sample}_rev.bw"
+    log:
+        "logs/bamCov/{sample}.log"
     threads: 4
     run: 
-        shell("bamCoverage -b {input} -o {output.fwfile} -of bigwig --filterRNAstrand forward -p 8 --binSize 1 --extendReads")
-        shell("bamCoverage -b {input} -o {output.rvfile} -of bigwig --filterRNAstrand reverse -p 8 --binSize 1 --extendReads")
+        shell("bamCoverage -b {input} -o {output.fwfile} -of bigwig --filterRNAstrand forward --normalizeUsing RPKM -p 8 --binSize 10 --extendReads > {log}")
+        shell("bamCoverage -b {input} -o {output.rvfile} -of bigwig --filterRNAstrand reverse --normalizeUsing RPKM -p 8 --binSize 10 --extendReads > {log}")
