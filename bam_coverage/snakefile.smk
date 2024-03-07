@@ -8,9 +8,17 @@ rule all:
     input:
         expand("covg_bigwigs/{sample}_{dir}.bw", sample=config["samples"], dir=["fwd", "rev"])    
 
+rule uncompress:
+    input:
+        zipped_bam="{sample}_sgrna_out.bam.gz"
+    output:
+        unzipped_bam="{sample}_sgrna_out.bam"
+    run:
+        shell("gunzip {input} > {output}")
+
 rule bam_coverage: 
     input:
-        bamfile="sorted_reads/{sample}.bam"
+        bamfile="{sample}_sgrna_out.bam"
     output:
         fwfile="covg_bigwigs/{sample}_fwd.bw",
         rvfile="covg_bigwigs/{sample}_rev.bw"
