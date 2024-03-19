@@ -6,7 +6,7 @@ configfile: "config.yaml"
 
 rule all:
     input:
-        expand("covg_bigwigs/{sample}_{dir}.bw", sample=config["samples"], dir=["fwd", "rev"])    
+        expand("covg_bigwigs/{sample}_{dir}.bw", sample=config["samples"], dir=["fwd", "rev", "total"])    
 
 rule uncompress:
     input:
@@ -21,10 +21,12 @@ rule bam_coverage:
         bamfile="{sample}_sgrna_out.bam"
     output:
         fwfile="covg_bigwigs/{sample}_fwd.bw",
-        rvfile="covg_bigwigs/{sample}_rev.bw"
+        rvfile="covg_bigwigs/{sample}_rev.bw",
+        totalfile="covg_bigwigs/{sample}_total.bw",
     log:
         "logs/bamCov/{sample}.log"
     threads: 4
     run: 
         shell("bamCoverage -b {input} -o {output.fwfile} -of bigwig --filterRNAstrand forward --normalizeUsing RPKM -p 8 --binSize 10 --extendReads > {log}")
         shell("bamCoverage -b {input} -o {output.rvfile} -of bigwig --filterRNAstrand reverse --normalizeUsing RPKM -p 8 --binSize 10 --extendReads > {log}")
+        shell("bamCoverage -b {input} -o {output.totalfile} -of bigwig --normalizeUsing RPKM -p 8 --binSize 10 --extendReads > {log}")
